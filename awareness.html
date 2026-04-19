@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    AWARENESS PAGE — shown after the user submits credentials.
+    This is the CORE educational component: explaining what just happened,
+    showing their captured data, and teaching them how to protect themselves.
+  -->
+  <title>⚠️ Cybersecurity Awareness — You Were Phished!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: #243048;
+      --text: #e8ecf4;
+      --text-muted: #8a94a8;
+      --accent: #ff4444;
+      --accent2: #4a9eff;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --tip-bg: #0d2818;
+      --tip-border: #22c55e;
+      --danger-bg: #1a0808;
+      --danger-border: #ff4444;
+      --info-bg: #0a1929;
+      --info-border: #4a9eff;
+      --mono: 'DM Mono', monospace;
+      --font: 'DM Sans', sans-serif;
+      --font-display: 'DM Serif Display', serif;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8f6f2;
+      --surface: #ffffff;
+      --surface2: #f0ede8;
+      --border: #e0dbd0;
+      --text: #1a1a18;
+      --text-muted: #6b6860;
+      --accent: #dc2626;
+      --accent2: #1d4ed8;
+      --tip-bg: #f0fdf4;
+      --tip-border: #16a34a;
+      --danger-bg: #fef2f2;
+      --danger-border: #dc2626;
+      --info-bg: #eff6ff;
+      --info-border: #2563eb;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── Alert Banner at Top ── */
+    .alert-bar {
+      background: var(--accent);
+      color: #fff;
+      text-align: center;
+      padding: 14px 20px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      animation: pulse-bg 2s ease-in-out infinite;
+    }
+    @keyframes pulse-bg {
+      0%, 100% { background: #dc2626; }
+      50%       { background: #ef4444; }
+    }
+    .alert-bar .badge {
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
+    /* ── Theme Toggle ── */
+    .theme-toggle {
+      position: fixed; top: 60px; right: 20px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 50px; padding: 8px 14px;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--text-muted);
+      transition: all 0.2s; box-shadow: var(--shadow); z-index: 100;
+      font-family: var(--font);
+    }
+    .theme-toggle:hover { color: var(--text); border-color: var(--accent2); }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .hero-icon {
+      font-size: 64px;
+      display: block;
+      margin-bottom: 16px;
+      animation: shake 0.6s ease 0.5s both;
+    }
+    @keyframes shake {
+      0%,100%{transform:rotate(0)} 20%{transform:rotate(-8deg)} 40%{transform:rotate(8deg)}
+      60%{transform:rotate(-4deg)} 80%{transform:rotate(4deg)}
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 42px);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .hero h1 .red { color: var(--accent); }
+    .hero p { font-size: 16px; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+
+    /* ── Captured Credentials Box ── */
+    .credentials-box {
+      background: var(--danger-bg);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 32px;
+      animation: slideUp 0.5s ease forwards;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .credentials-box h2 {
+      font-size: 16px; font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cred-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 16px;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+    .cred-label {
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding-top: 2px;
+    }
+    .cred-value {
+      font-family: var(--mono);
+      font-size: 14px;
+      background: var(--surface);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      word-break: break-all;
+      color: var(--accent);
+    }
+    .cred-value.safe { color: var(--text); }
+    .disclaimer-note {
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--surface);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-left: 3px solid var(--warning);
+    }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .section-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-card h2 .num {
+      width: 28px; height: 28px;
+      background: var(--accent2);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* Info/Tip boxes */
+    .info-box {
+      background: var(--info-bg);
+      border-left: 4px solid var(--info-border);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin: 12px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .tip-box {
+      background: var(--tip-bg);
+      border-left: 4px solid var(--tip-border);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin: 12px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .tip-box strong { color: var(--success); }
+
+    /* How you were tricked - step list */
+    .trick-list { list-style: none; padding: 0; }
+    .trick-list li {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .trick-list li:last-child { border-bottom: none; }
+    .trick-icon { font-size: 22px; flex-shrink: 0; width: 36px; text-align: center; }
+    .trick-content strong { display: block; font-size: 14px; margin-bottom: 3px; }
+    .trick-content span { font-size: 13px; color: var(--text-muted); }
+
+    /* Prevention tips grid */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .tip-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tip-card:hover { transform: translateY(-2px); border-color: var(--success); }
+    .tip-card .tip-icon { font-size: 24px; margin-bottom: 10px; }
+    .tip-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .tip-card p  { font-size: 13px; color: var(--text-muted); }
+
+    /* Metadata info table */
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      font-family: var(--mono);
+      margin-top: 12px;
+    }
+    .meta-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .meta-table td:first-child {
+      color: var(--text-muted);
+      font-weight: 500;
+      width: 180px;
+    }
+    .meta-table td:last-child { color: var(--text); word-break: break-all; }
+    .meta-table tr:last-child td { border-bottom: none; }
+
+    /* Action buttons */
+    .action-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      padding: 12px 24px; border-radius: 8px;
+      font-family: var(--font); font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.2s;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary { background: var(--accent2); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* Dashboard link */
+    .dashboard-cta {
+      text-align: center;
+      padding: 28px;
+      background: var(--surface2);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+    }
+    .dashboard-cta h3 { font-size: 18px; margin-bottom: 8px; }
+    .dashboard-cta p  { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    footer strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <!-- Top alert bar -->
+  <div class="alert-bar">
+    🚨 CYBERSECURITY AWARENESS DEMO
+    <span class="badge">EDUCATIONAL PURPOSE ONLY</span>
+    No real data was stored or transmitted.
+  </div>
+
+  <!-- Theme toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <span id="theme-icon">☀️</span>
+    <span id="theme-label">Light</span>
+  </button>
+
+  <div class="container">
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+      <span class="hero-icon">🎣</span>
+      <h1>You just got <span class="red">Phished!</span></h1>
+      <p>Don't worry — this was a controlled cybersecurity awareness demonstration. 
+        Let's learn exactly what happened and how to stay safe.</p>
+    </div>
+
+    <!-- ── CAPTURED CREDENTIALS (Demo reveal) ── -->
+    <div class="credentials-box">
+      <h2>🔓 Credentials Captured — What an Attacker Would See</h2>
+
+      <div class="cred-row">
+        <span class="cred-label">Email / Username</span>
+        <span class="cred-value" id="captured-email">Loading…</span>
+      </div>
+
+      <div class="cred-row">
+        <span class="cred-label">Password</span>
+        <span class="cred-value" id="captured-password">Loading…</span>
+      </div>
+
+      <div class="cred-row">
+        <span class="cred-label">Submitted At</span>
+        <span class="cred-value safe" id="captured-time">—</span>
+      </div>
+
+      <div class="cred-row">
+        <span class="cred-label">Your IP Address</span>
+        <span class="cred-value safe" id="captured-ip">Fetching…</span>
+      </div>
+
+      <div class="cred-row">
+        <span class="cred-label">Browser</span>
+        <span class="cred-value safe" id="captured-browser">—</span>
+      </div>
+
+      <div class="cred-row">
+        <span class="cred-label">Operating System</span>
+        <span class="cred-value safe" id="captured-os">—</span>
+      </div>
+
+      <div class="disclaimer-note">
+        ⚠️ <strong>IMPORTANT:</strong> In this demo, your data was never permanently stored, 
+        sent to a real server, or used for any purpose. In a REAL phishing attack, 
+        all of the above would be silently sent to an attacker's server.
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: WHAT IS PHISHING ── -->
+    <div class="section-card">
+      <h2><span class="num">1</span> What is Phishing?</h2>
+      <p>
+        <strong>Phishing</strong> is a type of social engineering attack where cybercriminals create
+        fake websites, emails, or messages that impersonate trusted organizations — banks, email providers,
+        social media platforms — to steal your login credentials, credit card numbers, or other sensitive data.
+      </p>
+      <div class="info-box">
+        📊 According to cybersecurity reports, phishing is involved in over <strong>36% of all data breaches</strong>.
+        It remains the #1 attack vector because it targets human psychology, not software vulnerabilities.
+      </div>
+      <p style="margin-top:14px;font-size:14px;color:var(--text-muted)">
+        Phishing attacks often arrive via email with urgent messages like "Your account will be suspended!"
+        or "Verify your identity now." The links lead to convincing fake pages exactly like the one you just visited.
+      </p>
+    </div>
+
+    <!-- ── SECTION 2: HOW YOU WERE TRICKED ── -->
+    <div class="section-card">
+      <h2><span class="num">2</span> How You Were Tricked — Anatomy of This Attack</h2>
+      <p style="margin-bottom:16px;font-size:14px;color:var(--text-muted)">
+        The fake login page used these classic phishing techniques:
+      </p>
+      <ul class="trick-list">
+        <li>
+          <span class="trick-icon">🏦</span>
+          <div class="trick-content">
+            <strong>Copied visual identity</strong>
+            <span>The logo, colors, fonts, and layout matched a real bank exactly. Your brain recognized the pattern and trusted it.</span>
+          </div>
+        </li>
+        <li>
+          <span class="trick-icon">🔒</span>
+          <div class="trick-content">
+            <strong>Fake "secure" indicators</strong>
+            <span>"256-bit SSL Encrypted" badge was purely cosmetic. HTTPS only means the connection is encrypted — not that the site is legitimate.</span>
+          </div>
+        </li>
+        <li>
+          <span class="trick-icon">⏳</span>
+          <div class="trick-content">
+            <strong>Realistic processing delay</strong>
+            <span>The "verifying credentials" spinner mimics a real bank login, reducing suspicion and making you wait while data is "processed."</span>
+          </div>
+        </li>
+        <li>
+          <span class="trick-icon">📱</span>
+          <div class="trick-content">
+            <strong>Professional UI/UX design</strong>
+            <span>Modern, responsive design with dark/light mode, animations, and polished components. Attackers invest heavily in making fake sites look real.</span>
+          </div>
+        </li>
+        <li>
+          <span class="trick-icon">🔗</span>
+          <div class="trick-content">
+            <strong>Deceptive domain name</strong>
+            <span>In real attacks, the URL might be "secure-bank-login.com" or "securebank.account-verify.net" — easy to miss if you're not checking carefully.</span>
+          </div>
+        </li>
+        <li>
+          <span class="trick-icon">🤝</span>
+          <div class="trick-content">
+            <strong>Social OAuth buttons</strong>
+            <span>"Sign in with Google" buttons can redirect to fake OAuth pages that also steal credentials. Always verify the OAuth domain is accounts.google.com.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ── SECTION 3: HOW TO PREVENT PHISHING ── -->
+    <div class="section-card">
+      <h2><span class="num">3</span> How to Protect Yourself</h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">🔍</div>
+          <h3>Check the URL</h3>
+          <p>Always verify the exact domain. "paypa1.com" ≠ "paypal.com". Look for subtle misspellings or extra words.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🔐</div>
+          <h3>Use a Password Manager</h3>
+          <p>Password managers only autofill on the real domain. They won't fill credentials on a phishing site.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📲</div>
+          <h3>Enable 2FA</h3>
+          <p>Two-factor authentication stops attackers even if they have your password. Use an authenticator app, not SMS.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🚨</div>
+          <h3>Be Suspicious of Urgency</h3>
+          <p>"Your account will be deleted in 24 hours!" is a pressure tactic. Legitimate services rarely use urgent threats.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📧</div>
+          <h3>Don't Click Email Links</h3>
+          <p>Type the website URL directly into your browser instead of clicking links in emails or messages.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🛡️</div>
+          <h3>Use Anti-Phishing Tools</h3>
+          <p>Modern browsers, email clients, and security software flag known phishing domains automatically.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🧠</div>
+          <h3>Train Your Team</h3>
+          <p>Regular phishing simulations (like this one) help employees recognize attacks before falling for real ones.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📞</div>
+          <h3>Verify by Phone</h3>
+          <p>If in doubt, call the organization directly using the number on their official website — not one in the email.</p>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:20px">
+        <strong>✅ Golden Rule:</strong> If an email or link asks you to urgently log into an account,
+        open a NEW browser tab and navigate to the site manually. Never use the link provided.
+      </div>
+    </div>
+
+    <!-- ── DEVICE INFO SECTION ── -->
+    <div class="section-card">
+      <h2><span class="num">4</span> Data Collected Without Your Explicit Input</h2>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:12px">
+        A phishing page can silently collect this information even before you type anything:
+      </p>
+      <table class="meta-table">
+        <tr><td>IP Address</td><td id="meta-ip">Fetching…</td></tr>
+        <tr><td>Browser</td><td id="meta-browser">—</td></tr>
+        <tr><td>OS Platform</td><td id="meta-os">—</td></tr>
+        <tr><td>Screen Resolution</td><td id="meta-screen">—</td></tr>
+        <tr><td>Language</td><td id="meta-lang">—</td></tr>
+        <tr><td>Timezone</td><td id="meta-tz">—</td></tr>
+        <tr><td>Cookies Enabled</td><td id="meta-cookies">—</td></tr>
+        <tr><td>Do Not Track</td><td id="meta-dnt">—</td></tr>
+        <tr><td>Page Load Time</td><td id="meta-time">—</td></tr>
+      </table>
+      <div class="info-box" style="margin-top:14px">
+        All of the above was gathered via standard JavaScript APIs — no special permissions required.
+        Attackers use this to profile targets and craft more convincing follow-up attacks.
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD LINK ── -->
+    <div class="dashboard-cta">
+      <h3>📊 View Demo Analytics Dashboard</h3>
+      <p>See aggregated demo data (no real PII stored) including submission count, browser stats, and timing data.</p>
+      <a href="dashboard.html" class="btn btn-primary">Open Dashboard →</a>
+    </div>
+
+    <!-- ── ACTION BUTTONS ── -->
+    <div class="action-row">
+      <a href="index.html" class="btn btn-outline">← Try Again (Demo)</a>
+      <a href="phishing-email.html" class="btn btn-outline">📧 See Phishing Email Example</a>
+      <button class="btn btn-primary" onclick="window.print()">🖨 Print This Guide</button>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <strong>⚠️ CYBERSECURITY AWARENESS DEMO</strong> — All credentials entered are discarded immediately and never stored.<br>
+    This simulation was created for educational purposes only. Use responsibly.
+  </footer>
+
+  <!-- ── JAVASCRIPT ── -->
+  <script>
+    /**
+     * THEME TOGGLE — awareness page starts in dark mode for impact
+     */
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.getAttribute('data-theme') === 'light';
+      html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      document.getElementById('theme-icon').textContent  = isLight ? '🌙' : '☀️';
+      document.getElementById('theme-label').textContent = isLight ? 'Dark' : 'Light';
+    }
+
+    /**
+     * LOAD CAPTURED CREDENTIALS
+     * Retrieved from sessionStorage (set by login page) or URL params from backend.
+     * This data is NEVER stored permanently — only in the browser's session memory.
+     */
+    function loadCapturedData() {
+      // Try sessionStorage first (most recent submission)
+      let email    = sessionStorage.getItem('demo_email');
+      let password = sessionStorage.getItem('demo_password');
+      let ts       = sessionStorage.getItem('demo_ts');
+
+      // If not in session, try last entry in localStorage
+      if (!email) {
+        const localSubs = JSON.parse(localStorage.getItem('captured_submissions') || '[]');
+        if (localSubs.length > 0) {
+          const last = localSubs[localSubs.length - 1];
+          email = last.email;
+          password = last.password;
+          ts = last.timestamp;
+        }
+      }
+
+      // Final fallback to URL params or demo text
+      email    = email    || getParam('email')    || 'user@example.com (demo)';
+      password = password || getParam('password') || '(demo password)';
+      ts       = ts       || getParam('ts')       || new Date().toISOString();
+
+      document.getElementById('captured-email').textContent    = email;
+      document.getElementById('captured-password').textContent = password;
+      document.getElementById('captured-time').textContent     = new Date(ts).toLocaleString();
+    }
+
+    function getParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    /**
+     * COLLECT DEVICE METADATA
+     * Demonstrating what a phishing page collects passively.
+     */
+    function collectMetadata() {
+      const ua = navigator.userAgent;
+
+      // Parse browser name
+      let browser = 'Unknown';
+      if (ua.includes('Edg/'))     browser = 'Microsoft Edge';
+      else if (ua.includes('Chrome')) browser = 'Google Chrome';
+      else if (ua.includes('Firefox')) browser = 'Mozilla Firefox';
+      else if (ua.includes('Safari'))  browser = 'Apple Safari';
+      else if (ua.includes('Opera'))   browser = 'Opera';
+
+      // Parse OS
+      let os = 'Unknown';
+      if (ua.includes('Windows NT 10')) os = 'Windows 10/11';
+      else if (ua.includes('Windows'))  os = 'Windows';
+      else if (ua.includes('Mac OS X')) os = 'macOS';
+      else if (ua.includes('Android'))  os = 'Android';
+      else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
+      else if (ua.includes('Linux'))    os = 'Linux';
+
+      document.getElementById('captured-browser').textContent = browser;
+      document.getElementById('captured-os').textContent      = os;
+      document.getElementById('meta-browser').textContent     = browser + ' — ' + ua.substring(0, 60) + '…';
+      document.getElementById('meta-os').textContent          = os;
+      document.getElementById('meta-screen').textContent      = screen.width + '×' + screen.height + ' (depth: ' + screen.colorDepth + '-bit)';
+      document.getElementById('meta-lang').textContent        = navigator.language || 'Unknown';
+      document.getElementById('meta-tz').textContent          = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      document.getElementById('meta-cookies').textContent     = navigator.cookieEnabled ? 'Yes' : 'No';
+      document.getElementById('meta-dnt').textContent         = navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled / Not set';
+      document.getElementById('meta-time').textContent        = window.performance?.timing
+        ? (performance.timing.loadEventEnd - performance.timing.navigationStart) + 'ms'
+        : 'N/A';
+    }
+
+    /**
+     * FETCH IP ADDRESS
+     * Uses a free public IP API — same technique used by real phishing pages.
+     */
+    async function fetchIP() {
+      try {
+        const res  = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        document.getElementById('captured-ip').textContent = data.ip;
+        document.getElementById('meta-ip').textContent     = data.ip + ' (approximate location available via GeoIP)';
+      } catch {
+        document.getElementById('captured-ip').textContent = 'Could not fetch (network error)';
+        document.getElementById('meta-ip').textContent     = 'Unavailable in this environment';
+      }
+    }
+
+    // Run all on load
+    loadCapturedData();
+    collectMetadata();
+    fetchIP();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "phishing-awareness-demo",
+  "version": "1.0.0",
+  "description": "Cybersecurity awareness phishing simulation — educational purposes only. No real data is stored.",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "cybersecurity",
+    "phishing",
+    "awareness",
+    "education",
+    "demo"
+  ],
+  "author": "Cybersecurity Awareness Demo",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^4.22.1",
+    "express-rate-limit": "^7.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

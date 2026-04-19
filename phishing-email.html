@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    PHISHING EMAIL TEMPLATE PAGE
+    Shows a realistic phishing email alongside annotations explaining
+    each deceptive element. Pure educational content.
+  -->
+  <title>Phishing Email Example — Cybersecurity Awareness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #dc2626;
+      --accent2: #2563eb;
+      --mono: 'Courier New', monospace;
+      --font: 'DM Sans', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 0 0 60px; }
+
+    .page-header {
+      background: #1e293b; color: #fff;
+      padding: 20px 32px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .page-header h1 { font-size: 18px; }
+    .page-header .badge {
+      background: rgba(239,68,68,0.2); color: #f87171;
+      border: 1px solid rgba(239,68,68,0.4);
+      padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+
+    .intro-box {
+      background: #fff8f0; border-left: 4px solid #f59e0b;
+      border-radius: 0 10px 10px 0; padding: 16px 20px; margin-bottom: 32px;
+      font-size: 14px; color: #78350f;
+    }
+
+    h2 { font-size: 22px; margin-bottom: 20px; }
+
+    /* Email Client simulation */
+    .email-client {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      margin-bottom: 36px;
+    }
+
+    .email-titlebar {
+      background: #334155; color: #cbd5e1;
+      padding: 10px 16px; display: flex; align-items: center; gap: 8px;
+      font-size: 13px;
+    }
+    .dot-row { display: flex; gap: 5px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #f87171; } .dot-y { background: #fbbf24; } .dot-g { background: #4ade80; }
+    .email-titlebar span { margin-left: auto; }
+
+    .email-header {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      font-size: 13px;
+    }
+    .email-header .header-row { display: flex; gap: 12px; padding: 4px 0; }
+    .email-header .lbl { color: var(--text-muted); min-width: 60px; }
+    .email-header .val { color: var(--text); }
+    .suspicious { color: var(--accent) !important; font-weight: 600; }
+    .subject-line { font-size: 18px; font-weight: 700; padding: 16px 24px 0; }
+
+    /* Email body */
+    .email-body { padding: 24px; font-size: 14px; line-height: 1.7; }
+    .email-logo {
+      text-align: center; padding: 20px;
+      border-bottom: 1px solid var(--border); margin-bottom: 24px;
+    }
+    .email-logo .logo { font-size: 22px; font-weight: 700; color: #1a4d7c; }
+    .email-body p { margin-bottom: 14px; }
+    .alert-msg {
+      background: #fff8e1; border: 1px solid #f59e0b;
+      border-radius: 8px; padding: 16px;
+      margin: 16px 0; font-size: 13px; color: #78350f;
+    }
+    .cta-btn {
+      display: block; margin: 24px auto; text-align: center;
+      background: #1a4d7c; color: #fff;
+      padding: 14px 32px; border-radius: 8px;
+      font-weight: 700; font-size: 15px;
+      text-decoration: none; max-width: 280px;
+      cursor: default;
+    }
+    .small-print { font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 16px; margin-top: 20px; }
+
+    /* Annotation overlays */
+    .annotations { margin-bottom: 36px; }
+    .annotations h2 { margin-bottom: 16px; }
+    .annotation {
+      display: flex; gap: 16px; align-items: flex-start;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; margin-bottom: 12px;
+    }
+    .annotation .ann-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .annotation h3 { font-size: 14px; margin-bottom: 4px; }
+    .annotation p  { font-size: 13px; color: var(--text-muted); }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--accent2); font-size: 14px; font-weight: 600;
+    }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>📧 Phishing Email Example — Educational Demo</h1>
+    <span class="badge">SIMULATED — NOT REAL</span>
+  </div>
+
+  <div class="container">
+
+    <div class="intro-box">
+      ⚠️ The email below is a <strong>simulated phishing example</strong> created for cybersecurity education.
+      The numbered annotations explain exactly how each element is designed to deceive you.
+      No real email was sent. All logos and brand names are fictional.
+    </div>
+
+    <h2>🎭 What a Phishing Email Looks Like</h2>
+
+    <!-- Simulated Email Client -->
+    <div class="email-client">
+      <div class="email-titlebar">
+        <div class="dot-row">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <span>Inbox — demo@youremail.com</span>
+      </div>
+
+      <div class="email-header">
+        <div class="header-row">
+          <span class="lbl">From:</span>
+          <span class="val suspicious">security-alert@securebank-verify.net</span>
+          <!-- ↑ SUSPICIOUS: Not the real domain -->
+        </div>
+        <div class="header-row">
+          <span class="lbl">Reply-To:</span>
+          <span class="val suspicious">no-reply@securebank.com</span>
+          <!-- ↑ Different from sender -->
+        </div>
+        <div class="header-row">
+          <span class="lbl">To:</span>
+          <span class="val">demo@youremail.com</span>
+        </div>
+        <div class="header-row">
+          <span class="lbl">Date:</span>
+          <span class="val" id="email-date">—</span>
+        </div>
+      </div>
+
+      <div class="subject-line">⚠️ [ACTION REQUIRED] Unusual Sign-In Attempt on Your SecureBank Account</div>
+
+      <div class="email-body">
+        <div class="email-logo">
+          <div class="logo">🏦 SecureBank</div>
+          <div style="font-size:12px;color:#64748b;margin-top:4px">Customer Security Services</div>
+        </div>
+
+        <p>Dear Valued Customer,</p>
+
+        <div class="alert-msg">
+          🔴 <strong>Security Alert:</strong> We detected an unusual sign-in attempt to your SecureBank Online account from a new device in <strong>Moscow, Russia</strong> at 3:47 AM.
+        </div>
+
+        <p>
+          To protect your account, we have <strong>temporarily limited access</strong> to your account.
+          Your account will be <strong>permanently suspended within 24 hours</strong> if you do not verify your identity immediately.
+        </p>
+
+        <p>Please click the button below to confirm your identity and restore full access to your account:</p>
+
+        <a class="cta-btn" href="index.html" onclick="alert('In a real attack, this would take you to a fake login page — exactly like the one in this demo!')">
+          ✅ Verify My Account Now
+        </a>
+
+        <p>If you did not attempt to sign in, you should still verify your account to prevent unauthorized access.</p>
+
+        <p>
+          For security reasons, this link will expire in <strong>24 hours</strong>. 
+          If you need assistance, please contact our 24/7 support team.
+        </p>
+
+        <p>Sincerely,<br>SecureBank Security Team</p>
+
+        <div class="small-print">
+          SecureBank Inc. | 123 Finance Street, New York, NY 10001<br>
+          © 2025 SecureBank. All rights reserved.<br>
+          <a href="#" style="color:#64748b">Unsubscribe</a> | <a href="#" style="color:#64748b">Privacy Policy</a> | <a href="#" style="color:#64748b">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Annotations -->
+    <div class="annotations">
+      <h2>🔍 Red Flags — What to Look For</h2>
+
+      <div class="annotation">
+        <div class="ann-num">1</div>
+        <div>
+          <h3>Suspicious Sender Domain</h3>
+          <p>The email appears to be from "securebank-verify.net" — NOT "securebank.com". 
+            Attackers register similar-looking domains. Always check the full email address, not just the display name.</p>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="ann-num">2</div>
+        <div>
+          <h3>Mismatched Reply-To</h3>
+          <p>The Reply-To address differs from the From address. This is a classic spoofing technique 
+            to make the email look legitimate while replies go to the attacker.</p>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="ann-num">3</div>
+        <div>
+          <h3>Artificial Urgency & Fear</h3>
+          <p>"Account suspended in 24 hours!" is a pressure tactic designed to make you act before you think. 
+            Legitimate banks never threaten immediate account closure via email.</p>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="ann-num">4</div>
+        <div>
+          <h3>Vague Greeting</h3>
+          <p>"Dear Valued Customer" instead of your real name. Your actual bank would use your full name 
+            since they have it on file. Generic greetings are a phishing signal.</p>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="ann-num">5</div>
+        <div>
+          <h3>Suspicious Call-to-Action Link</h3>
+          <p>The "Verify Now" button links to a fake page. Hover over links before clicking — 
+            in real phishing emails, the URL shown won't match the actual destination.</p>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="ann-num">6</div>
+        <div>
+          <h3>Fake Legitimacy Signals</h3>
+          <p>Professional logo, copyright footer, privacy policy links, and physical address — 
+            these are all easily copied and pasted to make fake emails look official.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="awareness.html" class="back-link">← Back to Awareness Guide</a>
+
+  </div>
+
+  <script>
+    document.getElementById('email-date').textContent = new Date().toLocaleString('en-US', {
+      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  </script>
+
+</body>
+</html>
